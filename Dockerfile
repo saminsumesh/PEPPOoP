@@ -3,7 +3,7 @@ RUN apt update && apt upgrade -y
 RUN apt-get install build-essential python3-dev -y
 RUN apt install git -y
 RUN cd /
-RUN mkdir /URL-Shortener-V2 
-WORKDIR /URL-Shortener-V2 
+RUN mkdir /PEPOoP-Link
+WORKDIR /PEPOoP-Link 
 COPY start.sh /start.sh
 CMD ["/bin/bash", "/start.sh"]
