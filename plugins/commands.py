@@ -69,7 +69,7 @@ async def start(c: Client, m: Message):
         )
     new_user = await get_user(m.from_user.id)
     t = START_MESSAGE.format(
-        m.from_user.mention, new_user["method"], new_user["base_site"]
+        m.from_user.mention,
     )
 
     if WELCOME_IMAGE:
@@ -87,14 +87,8 @@ async def help_command(c, m: Message):
     s = HELP_MESSAGE.format(
         firstname=temp.FIRST_NAME,
         username=temp.BOT_USERNAME,
-        repo=SOURCE_CODE,
-        owner="@ask_admin001",
+        owner="@Rishihx",
     )
-
-    if WELCOME_IMAGE:
-        return await m.reply_photo(
-            photo=WELCOME_IMAGE, caption=s, reply_markup=HELP_REPLY_MARKUP
-        )
     await m.reply_text(s, reply_markup=HELP_REPLY_MARKUP, disable_web_page_preview=True)
 
 
@@ -117,8 +111,8 @@ async def about_command(c, m: Message):
     )
 
 
-@Client.on_message(filters.command("method") & filters.private)
-@private_use
+# @Client.on_message(filters.command("method") & filters.private)
+# @private_use
 async def method_handler(c: Client, m: Message):
     user_id = m.from_user.id
     user = await get_user(user_id)
@@ -197,36 +191,18 @@ async def log_file(bot, message):
         await message.reply(str(e))
 
 
-@Client.on_message(filters.command("mdisk_api") & filters.private)
+@Client.on_message(filters.command("api") & filters.private)
 @private_use
-async def mdisk_api_handler(bot, message: Message):
+async def xplinks_api_handler(bot, message: Message):
     user_id = message.from_user.id
     user = await get_user(user_id)
     cmd = message.command
     if len(cmd) == 1:
-        return await message.reply(MDISK_API_MESSAGE.format(user["mdisk_api"]))
+        return await message.reply(XPLINKS_API_MESSAGE.format(user["xplinks_api"]))
     elif len(cmd) == 2:
         api = cmd[1].strip()
-        await update_user_info(user_id, {"mdisk_api": api})
-        await message.reply(f"Mdisk API updated successfully to {api}")
-
-
-@Client.on_message(filters.command("shortener_api") & filters.private)
-@private_use
-async def shortener_api_handler(bot, m: Message):
-    user_id = m.from_user.id
-    user = await get_user(user_id)
-    cmd = m.command
-    if len(cmd) == 1:
-        s = SHORTENER_API_MESSAGE.format(
-            base_site=user["base_site"], shortener_api=user["shortener_api"]
-        )
-
-        return await m.reply(s)
-    elif len(cmd) == 2:
-        api = cmd[1].strip()
-        await update_user_info(user_id, {"shortener_api": api})
-        await m.reply(f"Shortener API updated successfully to {api}")
+        await update_user_info(user_id, {"xplinks_api": api})
+        await message.reply(f"{mention}, Your new API Has Been Updated Successfully To {api}")
 
 
 @Client.on_message(filters.command("header") & filters.private)
@@ -323,24 +299,6 @@ async def banner_image_handler(bot, m: Message):
 
             else:
                 return await m.reply_text("Image URL is Invalid")
-
-
-@Client.on_message(filters.command("base_site") & filters.private)
-@private_use
-async def base_site_handler(bot, m: Message):
-    user_id = m.from_user.id
-    user = await get_user(user_id)
-    cmd = m.command
-    site = user["base_site"]
-    text = f"`/base_site (base_site)`\n\nCurrent base site: {site}\n\n EX: `/base_site shareus.in`\n\nAvailable base sites:\n{avl_web1}\nAnd All alternate sites to droplink.co"
-    if len(cmd) == 1:
-        return await m.reply(text=text, disable_web_page_preview=True)
-    elif len(cmd) == 2:
-        base_site = cmd[1].strip()
-        if not domain(base_site):
-            return await m.reply(text=text, disable_web_page_preview=True)
-        await update_user_info(user_id, {"base_site": base_site})
-        await m.reply("Base Site updated successfully")
 
 
 @Client.on_message(filters.command("me") & filters.private)
